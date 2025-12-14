@@ -227,8 +227,8 @@ class SendMail(Tool):
     inputs = {
         "smtp_server": {"type": "string", "description": "Adresse du serveur SMTP (ex: smtp.gmail.com)"},
         "smtp_port": {"type": "number", "description": "Port SMTP (ex: 587 pour TLS, 465 pour SSL)"},
-        "sender_email": {"type": "string", "description": "Adresse email expéditeur (ex: davjonathan6@gmail.com)"},
-        "sender_password": {"type": "string", "description": "Mot de passe ou App Password de l'expéditeur (ex:qbcqkupoknwgeenf)"},
+        "sender_email": {"type": "string", "description": "Adresse email expéditeur (ex: email@gmail.com)"},
+        "sender_password": {"type": "string", "description": "Mot de passe ou App Password de l'expéditeur (ex:password générer)"},
         "recipient_email": {"type": "string", "description": "Adresse email destinataire (peut être une liste séparée par des virgules)"},
         "subject": {"type": "string", "description": "Sujet du mail"},
         "message": {"type": "string", "description": "Contenu du mail (texte ou HTML si is_html=True)"},
