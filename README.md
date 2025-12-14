@@ -1,10 +1,10 @@
-# Agent2 - Agent IA Assistant avec RAG
+# agent_administratif1 - Agent IA Assistant avec RAG
 
 Un agent intelligent basé sur l'IA qui peut rechercher dans une base de connaissances, générer des documents (PDF, Word, Excel) et envoyer des emails via une interface conversationnelle intuitive.
 
 ## 📋 Description
 
-Agent2 est un assistant IA puissant qui combine :
+agent_administratif1 est un assistant IA puissant qui combine :
 - **RAG (Retrieval-Augmented Generation)** : Recherche intelligente dans une base de documents vectorielle
 - **Génération de documents** : Création automatique de fichiers PDF, Word et Excel professionnels
 - **Envoi d'emails** : Support pour l'envoi d'emails avec pièces jointes
@@ -45,8 +45,8 @@ Agent2 est un assistant IA puissant qui combine :
 
 1. **Cloner le repository**
 ```bash
-git clone https://github.com/rockyb2/Agent2.git
-cd Agent2
+git clone  https://github.com/rockyb2/agent_administratif1.git
+cd agent_administratif1
 ```
 
 2. **Créer un environnement virtuel (recommandé)**
@@ -140,7 +140,7 @@ et le message "Bonjour, ceci est un test"
 ## 📁 Structure du projet
 
 ```
-agent2/
+agent_administratif1/
 ├── app.py                 # Application principale avec interface Gradio
 ├── tools.py               # Outils de génération (Word, PDF, Excel, Email)
 ├── qdrantindex.py         # Script pour créer l'index vectoriel
@@ -185,13 +185,10 @@ Les contributions sont les bienvenues ! N'hésitez pas à :
 - Ouvrir une issue pour signaler un bug ou proposer une amélioration
 - Créer une pull request pour ajouter une fonctionnalité
 
-## 📄 Licence
-
-[Spécifiez votre licence ici]
 
 ## 👤 Auteur
 
-[Votre nom]
+Jonathan Zadi dit rockyb225
 
 ## 🙏 Remerciements
 
