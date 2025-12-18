@@ -1,9 +1,46 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from agent_core import create_agent
+from models import Message  # IMPORTANT
 
 app = FastAPI()
-agent = create_agent()
+
+# Configuration CORS pour permettre les requêtes depuis le frontend Vue.js
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"],  # Ports par défaut de Vite
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Initialiser l'agent
+try:
+    agent = create_agent()
+    agent_ready = True
+    print("✅ Agent initialisé avec succès")
+except Exception as e:
+    print(f"⚠️ Erreur lors de l'initialisation de l'agent: {e}")
+    agent = None
+    agent_ready = False
+
+# Endpoint racine pour vérifier que le serveur fonctionne
+@app.get("/")
+def root():
+    return {
+        "status": "ok",
+        "message": "Serveur MCP Agent IA fonctionnel",
+        "agent_ready": agent_ready
+    }
+
+# Endpoint de santé pour la vérification de connexion
+@app.get("/health")
+def health():
+    return {
+        "status": "healthy",
+        "agent_ready": agent_ready
+    }
 
 class MCPRequest(BaseModel):
     session_id: str
@@ -14,10 +51,14 @@ class MCPResponse(BaseModel):
     
 @app.post("/mcp/chat")
 def chat(req: MCPRequest):
-    conversation_id = req.session_id
-    output = agent.run(req.message)
-
-    # save_message(...)
-    return {"answer": output}
+    if not agent_ready or agent is None:
+        return {"answer": "Erreur: L'agent n'est pas initialisé. Vérifiez les logs du serveur."}
+    
+    try:
+        conversation_id = req.session_id
+        output = agent.run(req.message)
+        return {"answer": output}
+    except Exception as e:
+        return {"answer": f"Erreur lors du traitement: {str(e)}"}
 
 
