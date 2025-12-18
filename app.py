@@ -3,28 +3,16 @@ import gradio as gr
 import os
 from loadindex import loadIndex
 from tools import BuildWord,BuildPDF, BuildExcelPro,SendMail
+from db import SessionLocal
+from services.conversation_service import save_message, save_generated_file
+import uuid
 
+conversation_id = uuid.uuid4()  # à créer une fois par session
 import json
 import os
 
-HISTORY_FILE = "history.json"
-
-def load_history_local():
-    if not os.path.exists(HISTORY_FILE):
-        return []
-    try:
-        with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except:
-        return []
-
-def save_history_local(history):
-    with open(HISTORY_FILE, "w", encoding="utf-8") as f:
-        json.dump(history, f, indent=4, ensure_ascii=False)
 
 
-
-history_memory = load_history_local()
 
 
 
@@ -61,38 +49,60 @@ agent = buildAgent()
 
 
 # function for chat with agent
+from db import SessionLocal
+from services.conversation_service import save_message, save_generated_file
+import uuid
+
+conversation_id = uuid.uuid4()  # à créer une fois par session
+
 def chatwithAgent(message, history):
-    # Ajouter message utilisateur
-    history_memory.append({"role": "user", "content": message})
-    
-    # Obtenir réponse agent
+    db = SessionLocal()
+
+    # 1️⃣ Sauvegarde message utilisateur
+    save_message(
+        db,
+        conversation_id,
+        role="user",
+        content=message
+    )
+
+    # 2️⃣ Appel agent
     output = agent.run(message)
 
-    # Si l'agent fournit un fichier (séparateur "||"), renvoyer un dict compatible Gradio
+    # 3️⃣ Fichier généré ?
     if "||" in output:
         text, file_path = output.split("||")
-        text = text.strip()
-        file_path = file_path.strip()
 
-        # Enregistrer la réponse (texte) dans l'historique
-        history_memory.append({"role": "assistant", "content": text})
-        save_history_local(history_memory)
+        save_message(
+            db,
+            conversation_id,
+            role="assistant",
+            content=text
+        )
 
-        try:
-            f = open(file_path, "rb")
-            return {"content": text, "files": [{"name": os.path.basename(file_path), "data": f}]}
-        except Exception as e:
-            return f"{text} (fichier généré: {file_path}, mais impossible de l'attacher: {e})"
+        save_generated_file(
+            db,
+            conversation_id,
+            file_path
+        )
 
-    # Pas de fichier : renvoyer simplement le texte
-    history_memory.append({"role": "assistant", "content": output})
-    save_history_local(history_memory)
+        return text
+
+    # 4️⃣ Réponse simple
+    save_message(
+        db,
+        conversation_id,
+        role="assistant",
+        content=output
+    )
+
     return output
+
 
 
 
 gr.ChatInterface(
     fn=chatwithAgent,
     description= "Agent IA assistant qui génère (pdf,excel et word)",
-    title= "Agent2",
+    title= "agent_administratif1",
 ).launch()
