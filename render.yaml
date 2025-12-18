@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: agent-administratif
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn mcp_server:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: MISTRAL_API_KEY
+        sync: false
+      - key: QDRANT_URL
+        sync: false
+      - key: QDRANT_API_KEY
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: agent-db
+          property: connectionString
+    healthCheckPath: /health
+
+databases:
+  - name: agent-db
+    databaseName: agent_administratif
+    user: agent_user
+    plan: free
+

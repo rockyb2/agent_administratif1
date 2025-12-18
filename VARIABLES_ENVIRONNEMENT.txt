@@ -1,0 +1,24 @@
+# Variables d'environnement nécessaires pour le déploiement
+
+## Variables obligatoires
+
+MISTRAL_API_KEY=votre_cle_mistral_ici
+QDRANT_URL=https://votre-cluster.qdrant.io
+QDRANT_API_KEY=votre_cle_qdrant_ici
+
+## Variables optionnelles
+
+# Base de données PostgreSQL (si vous utilisez une base de données)
+DATABASE_URL=postgresql://user:password@host:port/database
+
+# CORS - Origines autorisées (séparées par des virgules)
+# Pour la production, ajoutez l'URL de votre frontend
+ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000,https://votre-frontend.vercel.app
+
+## Instructions pour Render
+
+1. Dans Render Dashboard, allez dans votre service web
+2. Cliquez sur "Environment"
+3. Ajoutez chaque variable avec le bouton "Add Environment Variable"
+4. Pour ALLOWED_ORIGINS, ajoutez toutes les URLs séparées par des virgules
+

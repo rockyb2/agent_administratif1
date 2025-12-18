@@ -7,9 +7,16 @@ from models import Message  # IMPORTANT
 app = FastAPI()
 
 # Configuration CORS pour permettre les requêtes depuis le frontend Vue.js
+# En production, utilisez une variable d'environnement pour les origines autorisées
+import os
+ALLOWED_ORIGINS = os.getenv(
+    "ALLOWED_ORIGINS",
+    "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173"
+).split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"],  # Ports par défaut de Vite
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

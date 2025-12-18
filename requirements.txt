@@ -1,0 +1,39 @@
+# Serveur Web
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+pydantic>=2.9.0
+python-multipart>=0.0.12
+
+# Agent IA
+smolagents>=0.1.0
+litellm>=1.55.0
+
+# RAG et Base Vectorielle
+llama-index>=0.11.0
+llama-index-vector-stores-qdrant>=0.3.0
+llama-index-llms-mistralai>=0.1.0
+llama-index-embeddings-huggingface>=0.3.0
+qdrant-client>=1.11.0
+
+# Embeddings HuggingFace (nécessaire pour sentence-transformers)
+sentence-transformers>=3.0.0
+torch>=2.0.0
+transformers>=4.40.0
+
+# Génération de documents
+python-docx>=1.1.0
+reportlab>=4.0.0
+openpyxl>=3.1.0
+Pillow>=10.0.0
+
+# Base de données PostgreSQL
+sqlalchemy>=2.0.0
+psycopg2-binary>=2.9.0
+alembic
+
+# Utilitaires
+python-dotenv>=1.0.0
+
+# Dépendances système (optionnel, pour certaines fonctionnalités)
+duckduckgo-search>=6.1.0
+
