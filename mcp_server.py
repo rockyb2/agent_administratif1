@@ -22,15 +22,25 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+agent = None
+
+def get_agent():
+    global agent
+    if agent is None:
+        print("⚙️ Initialisation de l'agent IA...")
+        agent = create_agent()
+    return agent
+
 # Initialiser l'agent
-try:
-    agent = create_agent()
-    agent_ready = True
-    print("✅ Agent initialisé avec succès")
-except Exception as e:
-    print(f"⚠️ Erreur lors de l'initialisation de l'agent: {e}")
-    agent = None
-    agent_ready = False
+# try:
+#     agent = create_agent()
+#     agent_ready = True
+#     print("✅ Agent initialisé avec succès")
+# except Exception as e:
+#     print(f"⚠️ Erreur lors de l'initialisation de l'agent: {e}")
+#     agent = None
+#     agent_ready = False
 
 # Endpoint racine pour vérifier que le serveur fonctionne
 @app.get("/")
@@ -58,14 +68,12 @@ class MCPResponse(BaseModel):
     
 @app.post("/mcp/chat")
 def chat(req: MCPRequest):
-    if not agent_ready or agent is None:
-        return {"answer": "Erreur: L'agent n'est pas initialisé. Vérifiez les logs du serveur."}
-    
     try:
-        conversation_id = req.session_id
+        agent = get_agent()
         output = agent.run(req.message)
         return {"answer": output}
     except Exception as e:
-        return {"answer": f"Erreur lors du traitement: {str(e)}"}
+        return {"answer": f"Erreur agent: {str(e)}"}
+
 
 
