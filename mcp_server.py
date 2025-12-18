@@ -43,21 +43,21 @@ def get_agent():
 #     agent_ready = False
 
 # Endpoint racine pour vérifier que le serveur fonctionne
-@app.get("/")
-def root():
-    return {
-        "status": "ok",
-        "message": "Serveur MCP Agent IA fonctionnel",
-        "agent_ready": agent_ready
-    }
+# @app.get("/")
+# def root():
+#     return {
+#         "status": "ok",
+#         "message": "Serveur MCP Agent IA fonctionnel",
+#         "agent_ready": agent_ready
+#     }
 
-# Endpoint de santé pour la vérification de connexion
-@app.get("/health")
-def health():
-    return {
-        "status": "healthy",
-        "agent_ready": agent_ready
-    }
+# # Endpoint de santé pour la vérification de connexion
+# @app.get("/health")
+# def health():
+#     return {
+#         "status": "healthy",
+#         "agent_ready": agent_ready
+#     }
 
 class MCPRequest(BaseModel):
     session_id: str
